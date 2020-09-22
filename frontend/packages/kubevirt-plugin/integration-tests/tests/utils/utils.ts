@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { execSync } from 'child_process';
 import * as _ from 'lodash';
-import { $, $$, browser, by, ExpectedConditions as until } from 'protractor';
+import { $, $$, browser, by, element, ExpectedConditions as until } from 'protractor';
 import { testName, appHost } from '@console/internal-integration-tests/protractor.conf';
 import { safeLoad } from 'js-yaml';
 import {
@@ -12,7 +12,7 @@ import {
   createYAMLLink,
   resourceTitle,
 } from '@console/internal-integration-tests/views/crud.view';
-import { click } from '@console/shared/src/test-utils/utils';
+import { click, jsClick } from '@console/shared/src/test-utils/utils';
 import {
   isLoaded as yamlPageIsLoaded,
   saveButton,
@@ -82,11 +82,23 @@ export async function getSelectedOptionText(selector: any) {
   return selector.$('option:checked').getText();
 }
 
+export async function selectButtonByText(selector: any, option: string) {
+  await click(selector.all(by.xpath("//*[contains(text(), '" + option + "')]")).first());
+}
+
 export async function selectOptionByText(selector: any, option: string) {
   await click(selector.all(by.cssContainingText('option', option)).first());
 }
 
+export async function selectItemMenuByText(selector: any, option: string) {
+  let xpath = "//button/div[contains(@class, 'pf-c-select__menu-item-main') and  contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + option.toLowerCase() + "')]//..//div";
+  console.log("looking for: " + option + "\n " + xpath);
+  await jsClick(selector.all(by.xpath(xpath)).first());
+  console.log("looking for: " + option)
+}
+
 export async function selectOptionByOptionValue(selector: any, option: string) {
+  console.log("")
   await click(selector.all(by.css(`option[value="${option}"]`)).first());
 }
 

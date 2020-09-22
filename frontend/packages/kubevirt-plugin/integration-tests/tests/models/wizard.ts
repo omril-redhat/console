@@ -2,9 +2,9 @@
 import { browser, ExpectedConditions as until } from 'protractor';
 import { createItemButton, isLoaded } from '@console/internal-integration-tests/views/crud.view';
 import { clickNavLink } from '@console/internal-integration-tests/views/sidenav.view';
-import { click, fillInput, asyncForEach } from '@console/shared/src/test-utils/utils';
+import { click, fillInput, asyncForEach, jsClick } from '@console/shared/src/test-utils/utils';
 import { K8sKind } from '@console/internal/module/k8s';
-import { selectOptionByText, enabledAsBoolean } from '../utils/utils';
+import { selectOptionByText, enabledAsBoolean, selectButtonByText, selectItemMenuByText } from '../utils/utils';
 import {
   CloudInitConfig,
   Disk,
@@ -80,11 +80,14 @@ export class Wizard {
   }
 
   async selectOperatingSystem(operatingSystem: string) {
-    await selectOptionByText(view.operatingSystemSelect, operatingSystem);
+    await jsClick(view.osDropDown);    
+    await selectButtonByText(view.operatingSystemSelect, operatingSystem);
   }
 
   async selectFlavor(flavor: FlavorConfig) {
-    await selectOptionByText(view.flavorSelect, flavor.flavor);
+    console.log("flavor")
+    await jsClick(view.flavorDropDown);    
+    await selectButtonByText(view.flavorSelect, flavor.flavor);
     if (flavor.flavor === Flavor.CUSTOM && (!flavor.memory || !flavor.cpu)) {
       throw Error('Custom Flavor requires memory and cpu values.');
     }
@@ -97,11 +100,13 @@ export class Wizard {
   }
 
   async selectWorkloadProfile(workloadProfile: string) {
-    await selectOptionByText(view.workloadProfileSelect, workloadProfile);
+    await jsClick(view.workloadProfileDropDown);
+    await selectButtonByText(view.workloadProfileSelect, workloadProfile);
   }
 
   async selectProvisionSource(provisionOptions) {
-    await selectOptionByText(view.provisionSourceSelect, provisionOptions.method);
+    await jsClick(view.provisionDropDown);    
+    await selectItemMenuByText(view.provisionSourceSelect, provisionOptions.method);   
     if (Object.prototype.hasOwnProperty.call(provisionOptions, 'source')) {
       await fillInput(view.provisionSourceInputs[provisionOptions.method], provisionOptions.source);
     }
@@ -206,7 +211,7 @@ export class Wizard {
       throw Error('VM Name not defined');
     }
     if (description) {
-      await this.fillDescription(description);
+      await this.fillDescription(description);     
     }
     if ((await browser.getCurrentUrl()).match(/\?template=.+$/)) {
       // We are creating a VM from template via its action button
@@ -289,12 +294,16 @@ export class Wizard {
     await this.processGeneralStep(data);
     await this.processNetworkStep(data);
     await this.processStorageStep(data);
+    console.log("done processStorageStep")
     await this.processAdvanceStep(data);
+    console.log("done processAdvanceStep")
     await this.processReviewStep(data);
-
+    console.log("done processReviewStep")
     // Create
     await this.confirmAndCreate();
+    console.log("done confirmAndCreate")
     await this.waitForCreation();
+    console.log("done waitForCreation ")
     // TODO check for error and in case of error throw Error
   }
 }

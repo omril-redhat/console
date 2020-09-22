@@ -18,7 +18,11 @@ export const footerErrorDescroption = footerError.$('.pf-c-alert__description');
 
 // Basic Settings tab
 export const templateSelect = $('#template-dropdown');
-export const provisionSourceSelect = $('#image-source-type-dropdown');
+export const provisionDropDown = $("#image-source-type-dropdown")
+export const osDropDown = $("#operating-system-dropdown");
+export const flavorDropDown = $("#flavor-dropdown");
+export const workloadProfileDropDown = $("#workload-profile-dropdown");
+export const provisionSourceSelect = $('.pf-c-select__menu-item-main');
 const provisionSourceURL = $('#provision-source-url');
 const provisionSourceContainerImage = $('#provision-source-container');
 export const provisionSourceInputs = {

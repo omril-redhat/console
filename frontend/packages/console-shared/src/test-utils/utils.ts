@@ -83,7 +83,9 @@ export async function withResource(
     removeLeakableResource(resourceSet, resource);
   }
 }
-
+export async function jsClick(elem: any){
+  await browser.executeScript("arguments[0].click()",elem)
+}
 export async function click(elem: any, timeout?: number) {
   const _timeout = resolveTimeout(timeout, config.jasmineNodeOpts.defaultTimeoutInterval);
   await browser.wait(until.elementToBeClickable(elem), _timeout);

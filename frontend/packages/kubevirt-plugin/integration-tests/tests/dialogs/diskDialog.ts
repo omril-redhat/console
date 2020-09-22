@@ -1,5 +1,5 @@
-import { click, fillInput } from '@console/shared/src/test-utils/utils';
-import { selectOptionByText, getSelectedOptionText, getSelectOptions } from '../utils/utils';
+import { click, fillInput, jsClick } from '@console/shared/src/test-utils/utils';
+import { selectOptionByText, getSelectedOptionText, getSelectOptions, selectItemMenuByText } from '../utils/utils';
 import * as view from '../../views/dialogs/diskDialog.view';
 import { modalSubmitButton, saveButton } from '../../views/kubevirtUIResource.view';
 import { Disk, DiskSourceConfig } from '../types/types';
@@ -43,7 +43,10 @@ export class DiskDialog {
   }
 
   async selectInterface(diskInterface: string) {
-    await selectOptionByText(view.diskInterface, diskInterface);
+    console.log("enter disk intreface: " + diskInterface)
+    await jsClick(view.diskDropDownMenu);
+    await selectItemMenuByText(view.diskInterface, diskInterface);
+    console.log("exit disk intreface")
   }
 
   async selectStorageClass(storageClass: string) {

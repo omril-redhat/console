@@ -71,7 +71,9 @@ describe('Kubevirt create VM using wizard', () => {
       async () => {
         await withResource(leakedResources, vm.asResource(), async () => {
           await vm.create();
+          console.log("done create")
           await vm.navigateToDetail();
+          console.log("done navigate")
         });
       },
       specTimeout,

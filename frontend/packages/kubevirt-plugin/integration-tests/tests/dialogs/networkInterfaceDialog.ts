@@ -1,6 +1,6 @@
 import { click, fillInput } from '@console/shared/src/test-utils/utils';
 import * as view from '../../views/dialogs/networkInterface.view';
-import { selectOptionByText, getSelectOptions } from '../utils/utils';
+import { selectOptionByText, selectOptionByOptionValue, getSelectOptions, selectItemMenuByText } from '../utils/utils';
 import { Network } from '../types/types';
 import { modalSubmitButton, saveButton } from '../../views/kubevirtUIResource.view';
 import { waitForNoLoaders } from '../../views/wizard.view';
@@ -15,11 +15,15 @@ export class NetworkInterfaceDialog {
   }
 
   async selectNetwork(network: string) {
-    await selectOptionByText(view.nicNetwork, network);
+    console.log("selectNetwork start")
+    await selectOptionByOptionValue(view.nicNetwork, network);
+    console.log("selectNetwork done")
   }
 
   async selectType(type: string) {
-    await selectOptionByText(view.nicType, type);
+    console.log("selectType start")
+    await selectItemMenuByText(view.nicType, type);
+    console.log("selectType done")
   }
 
   async fillMAC(mac: string) {
@@ -33,9 +37,9 @@ export class NetworkInterfaceDialog {
   async create(NIC: Network) {
     await waitForNoLoaders();
     await this.fillName(NIC.name);
-    await this.selectModel(NIC.model);
+  //  await this.selectModel(NIC.model);
     await this.selectNetwork(NIC.network);
-    await this.selectType(NIC.type);
+  //  await this.selectType(NIC.type);
     await this.fillMAC(NIC.mac);
     await click(modalSubmitButton);
     await waitForNoLoaders();
