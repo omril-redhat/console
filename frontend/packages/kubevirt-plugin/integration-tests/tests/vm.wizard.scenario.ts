@@ -64,6 +64,7 @@ describe('Kubevirt create VM using wizard', () => {
 
   for (const [id, vm] of Object.entries(VMTestCaseIDs)) {
     const { method } = vm.getData().provisionSource;
+    console.log('Method: ' + method)
     const specTimeout =
       method === ProvisionSource.DISK ? CLONE_VM_TIMEOUT_SECS : VM_BOOTUP_TIMEOUT_SECS;
     it(

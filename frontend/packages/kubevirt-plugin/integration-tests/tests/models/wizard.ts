@@ -246,7 +246,9 @@ export class Wizard {
   async processNetworkStep(data: VMBuilderData) {
     const { networks, provisionSource, template } = data;
     for (const resource of networks) {
+      console.log("addNic")
       await this.addNIC(resource);
+      console.log("addNic done")
     }
     if (provisionSource?.method === ProvisionSource.PXE && template === undefined) {
       // Select the last NIC as the source for booting

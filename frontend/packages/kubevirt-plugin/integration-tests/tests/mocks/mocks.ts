@@ -72,7 +72,6 @@ export const dataVolumeManifest = ({ name, namespace, sourceURL, accessMode, vol
     spec: {
       pvc: {
         accessModes: [accessMode],
-        dataSource: {},
         resources: {
           requests: {
             storage: '1Gi',
