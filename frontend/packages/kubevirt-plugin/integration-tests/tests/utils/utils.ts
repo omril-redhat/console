@@ -98,7 +98,7 @@ export async function selectItemMenuByText(selector: any, option: string) {
 }
 
 export async function selectOptionByOptionValue(selector: any, option: string) {
-  console.log("")
+  console.log("select option: " + option)
   await click(selector.all(by.css(`option[value="${option}"]`)).first());
 }
 

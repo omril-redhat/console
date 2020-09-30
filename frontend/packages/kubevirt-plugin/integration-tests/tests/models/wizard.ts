@@ -250,8 +250,10 @@ export class Wizard {
       await this.addNIC(resource);
       console.log("addNic done")
     }
+    console.log("going to " + provisionSource?.method)
     if (provisionSource?.method === ProvisionSource.PXE && template === undefined) {
       // Select the last NIC as the source for booting
+      
       await this.selectBootableNIC(networks[networks.length - 1].name);
     }
     await this.next();

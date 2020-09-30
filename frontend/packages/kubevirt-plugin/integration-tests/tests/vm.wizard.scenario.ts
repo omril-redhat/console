@@ -45,7 +45,6 @@ describe('Kubevirt create VM using wizard', () => {
 
   const VMTestCaseIDs = {
     'ID(CNV-870)': vmPresets[ProvisionSource.CONTAINER],
-    'ID(CNV-2446)': vmPresets[ProvisionSource.DISK],
     'ID(CNV-869)': vmPresets[ProvisionSource.URL],
     'ID(CNV-771)': vmPresets[ProvisionSource.PXE],
   };
