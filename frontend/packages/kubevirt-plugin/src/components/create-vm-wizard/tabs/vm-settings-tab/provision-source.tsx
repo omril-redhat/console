@@ -5,8 +5,9 @@ import { FormFieldRow } from '../../form/form-field-row';
 import { FormField, FormFieldType } from '../../form/form-field';
 import { iGetFieldValue } from '../../selectors/immutable/field';
 import { VMSettingsField } from '../../types';
-import { iGet } from '../../../../utils/immutable';
+import { iGet, iGetIn } from '../../../../utils/immutable';
 import { FormPFSelect } from '../../../form/form-pf-select';
+import { ValidationErrorType } from '@console/shared';
 
 const ProvisionSourceDiskHelpMsg: React.FC<ProvisionSourceDiskHelpMsgProps> = ({
   provisionSourceValue,
@@ -28,7 +29,7 @@ const ProvisionSourceDiskHelpMsg: React.FC<ProvisionSourceDiskHelpMsgProps> = ({
         return (
           <TextContent>
             <div className="pf-c-form__helper-text" aria-live="polite">
-              Enter URL here or edit the mounted disk in the {storageBtn} step.
+              Enter URL here or edit the rootdisk in the {storageBtn} step.
             </div>
             <div className="pf-c-form__helper-text" aria-live="polite">
               To boot this source from a CD-ROM edit the disk in the storage step and change to
@@ -38,10 +39,10 @@ const ProvisionSourceDiskHelpMsg: React.FC<ProvisionSourceDiskHelpMsgProps> = ({
         );
       case ProvisionSource.CONTAINER:
         return (
-          <Text>Enter container image here or edit the mounted disk in the {storageBtn} step.</Text>
+          <Text>Enter container image here or edit the rootdisk in the {storageBtn} step.</Text>
         );
       case ProvisionSource.DISK:
-        return <>Add a source disk in the {storageBtn} step</>;
+        return <>Add a disk in the {storageBtn} step and select it from the boot source dropdown</>;
       default:
         return null;
     }
@@ -79,6 +80,7 @@ export const ProvisionSourceComponent: React.FC<ProvisionSourceComponentProps> =
   ({ provisionSourceField, onChange, goToStorageStep, goToNetworkingStep }) => {
     const provisionSourceValue = iGetFieldValue(provisionSourceField);
     const sources = iGet(provisionSourceField, 'sources');
+    const validationType = iGetIn(provisionSourceField, ['validation', 'type']);
 
     return (
       <FormFieldRow field={provisionSourceField} fieldType={FormFieldType.PF_SELECT}>
@@ -112,9 +114,10 @@ export const ProvisionSourceComponent: React.FC<ProvisionSourceComponentProps> =
             goToStorageStep={goToStorageStep}
           />
         )}
-        {[ProvisionSource.PXE.getValue()].includes(provisionSourceValue) && (
-          <ProvisionSourceNetHelpMsg goToNetworkingStep={goToNetworkingStep} />
-        )}
+        {[ProvisionSource.PXE.getValue()].includes(provisionSourceValue) &&
+          validationType !== ValidationErrorType.Error && (
+            <ProvisionSourceNetHelpMsg goToNetworkingStep={goToNetworkingStep} />
+          )}
       </FormFieldRow>
     );
   },

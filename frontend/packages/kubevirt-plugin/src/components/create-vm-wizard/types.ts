@@ -33,6 +33,7 @@ export enum VMWizardProps {
   dataVolumes = 'dataVolumes',
   openshiftCNVBaseImages = 'openshiftCNVBaseImages',
   storageClassConfigMap = 'storageClassConfigMap',
+  nads = 'nads',
 }
 
 // order important
@@ -216,6 +217,7 @@ export type ChangedCommonDataProp =
   | VMWizardProps.dataVolumes
   | VMWizardProps.openshiftCNVBaseImages
   | VMWizardProps.storageClassConfigMap
+  | VMWizardProps.nads
   | VMWareProviderProps.deployment
   | VMWareProviderProps.deploymentPods
   | VMWareProviderProps.v2vvmware
@@ -246,6 +248,7 @@ export const DetectCommonDataChanges = new Set<ChangedCommonDataProp>([
   VMWizardProps.storageClassConfigMap,
   VMWizardProps.dataVolumes,
   VMWizardProps.openshiftCNVBaseImages,
+  VMWizardProps.nads,
   VMWareProviderProps.deployment,
   VMWareProviderProps.deploymentPods,
   VMWareProviderProps.v2vvmware,
@@ -302,6 +305,7 @@ export type VMWizardNetwork = {
 
 export enum VMWizardStorageType {
   TEMPLATE = 'TEMPLATE',
+  TEMPLATE_CLOUD_INIT = 'TEMPLATE_CLOUD_INIT',
   PROVISION_SOURCE_TEMPLATE_DISK = 'PROVISION_SOURCE_TEMPLATE_DISK',
   PROVISION_SOURCE_DISK = 'PROVISION_SOURCE_DISK',
   UI_INPUT = 'UI_INPUT',

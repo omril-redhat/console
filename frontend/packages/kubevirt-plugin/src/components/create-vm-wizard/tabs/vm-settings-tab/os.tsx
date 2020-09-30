@@ -26,7 +26,7 @@ import { operatingSystemsNative } from '../../../../constants/vm-templates/os';
 import { OperatingSystemRecord } from '../../../../types';
 import { iGetAnnotation } from '../../../../selectors/immutable/common';
 import { iGetName, iGetNamespace } from '../../selectors/immutable/selectors';
-import { PVC_UPLOAD_URL } from '../../../../constants';
+import { getPVCUploadURL } from '../../../../constants';
 import {
   BASE_IMAGE_AND_PVC_SHORT,
   BASE_IMAGE_AND_PVC_MESSAGE,
@@ -149,26 +149,32 @@ export const OS: React.FC<OSProps> = React.memo(
         };
 
         if (!iUserTemplate && !baseImagesLoadError) {
-          if (baseImageFoundInCluster && pvcName) {
+          if (baseImageFoundInCluster && pvcName && pvcNamespace) {
             osField.message = isBaseImageUploading
               ? BASE_IMAGE_AND_PVC_UPLOADING_SHORT
               : BASE_IMAGE_AND_PVC_SHORT;
             osField.longMessage = BASE_IMAGE_AND_PVC_MESSAGE;
             osField.checkboxDescription = isBaseImageUploading ? BASE_IMAGE_UPLOADING_MESSAGE : '';
-          } else if (pvcName) {
+          } else if (pvcName && pvcNamespace) {
             osField.message = NO_BASE_IMAGE_SHORT;
             osField.longMessage = canUploadGoldenImage ? (
               <>
                 Operating system image not available. You can either{' '}
-                <Link to={`${PVC_UPLOAD_URL}?${CDI_UPLOAD_OS_URL_PARAM}=${operatingSystem.id}`}>
+                <Link
+                  className="co-external-link"
+                  to={`${getPVCUploadURL(pvcNamespace)}?${CDI_UPLOAD_OS_URL_PARAM}=${
+                    operatingSystem.id
+                  }`}
+                >
                   upload a new disk image
                 </Link>{' '}
                 or define a boot source manually in the boot source dropdown
               </>
             ) : (
               <>
-                Operating system source not available. Define a boot source manually below or
-                request your administrator to define a source for the cluster.
+                Default operating system image not available. Define a boot source manually below or
+                request your administrator to define one for this operating system via the PVC
+                upload form.
               </>
             );
           } else {
