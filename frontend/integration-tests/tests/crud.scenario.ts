@@ -200,7 +200,8 @@ describe('Kubernetes resource CRUD operations', () => {
       );
       await yamlView.setEditorContent(safeDump(newContent));
       leakedResources.add(JSON.stringify({ name, plural, namespace: testName }));
-      await yamlView.saveButton.click();
+      console.log("wait for save")
+      await yamlView.saveButton.click();      
     });
 
     it('displays modal for editing resource instance labels', async () => {
