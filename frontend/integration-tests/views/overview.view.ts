@@ -5,6 +5,7 @@ const projectOverviewItemSelector = '.odc-topology-list-view__item-row';
 export const detailsSidebar = $('.overview__sidebar');
 export const detailsSidebarTitle = $('.resource-overview__heading .co-m-pane__name');
 
+
 export const itemsAreVisible = () => {
   return browser.wait(until.presenceOf($(projectOverviewItemSelector)));
 };
@@ -20,6 +21,10 @@ export const getProjectOverviewListItem = (name) => {
 export const sidebarIsLoaded = () => {
   return browser.wait(until.presenceOf($('.resource-overview')));
 };
+
+export const vmIsRunning = () => {
+  return browser.wait(until.presenceOf(element(by.xpath('//*[@data-test="status-text" and text()="Running"]'))));
+}
 
 const guidedTourModal = element(by.css('[id="guided-tour-modal"]'));
 const guidedTourSkip = element(

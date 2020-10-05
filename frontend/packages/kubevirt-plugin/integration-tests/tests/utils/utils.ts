@@ -17,6 +17,7 @@ import {
   isLoaded as yamlPageIsLoaded,
   saveButton,
   getEditorContent,
+  setEditorContent,
 } from '@console/internal-integration-tests/views/yaml.view';
 import { STORAGE_CLASS, PAGE_LOAD_TIMEOUT_SECS, SEC } from './constants/common';
 import { NodePortService, Status } from '../types/types';
@@ -53,6 +54,26 @@ export async function createProject(name: string) {
       .click();
     await browser.wait(until.urlContains(`/${name}`), PAGE_LOAD_TIMEOUT_SECS);
   }
+}
+
+export async function createVMWithYAML(yaml: string, getVMObj?:boolean){
+  let vm = null;
+  await browser.get(`${appHost}/k8s/ns/${testName}/virtualization`);
+  await isLoaded();
+  click(createItemButton);
+  click(createYAMLLink);
+  await yamlPageIsLoaded();
+  if (getVMObj) {
+    try {
+      vm = safeLoad(await getEditorContent());
+    } catch {
+      return null;
+    }
+  }
+  await setEditorContent(yaml);
+  await click(saveButton);
+  await isLoaded();
+  return vm;
 }
 
 export async function createExampleVMViaYAML(getVMObj?: boolean) {
